@@ -7,38 +7,39 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class FotoService {
-    public func sendRequest() {
-        let path = "/method/photos.getAll"
-        let sessionUser = UserSession.instance
-        
-        
-        var urlConstructor = URLComponents()
-        urlConstructor.scheme = "https"
-        urlConstructor.host = "api.vk.com"
-        urlConstructor.path = path
-        urlConstructor.queryItems = [
-            URLQueryItem(name: "access_token", value: sessionUser.token),
-            URLQueryItem(name: "no_service_albums", value: "1"),
-            URLQueryItem(name: "v", value: "5.92")
+    let baseUrl = "https://api.vk.com"
+    let sessionUser = UserSession.instance
+    let path = "/method/photos.getAll"
+
+    public func sendRequest(id: Int, completion: @escaping ([Photo]) -> Void) {
+        let parameters: Parameters = [
+            "access_token": sessionUser.token,
+            "no_service_albums": "1",
+            "owner_id": id,
+            "v": "5.92",
+            "count": 100
         ]
-        
-        guard let url = urlConstructor.url else { preconditionFailure("Bad url for photos.getAll")}
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let configuration = URLSessionConfiguration.default
-        let session =  URLSession(configuration: configuration)
-        
-        let task = session.dataTask(with: request) { (data, response, error) in
-            let json = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
-            
-            print("Список фотографий!")
-            print(json ?? "")
+
+        let url = baseUrl+path
+
+        Alamofire.request(url, method: .get, parameters: parameters).responseJSON { repsonse in
+            switch repsonse.result {
+            case .success(let value):
+                let json = JSON(value)
+                let photos = json["response"]["items"].arrayValue.map { json in
+                    return Photo(json: json)
+                }
+                completion(photos)
+//                                photos.forEach {
+//                                    print($0)
+//                                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
-        
-        task.resume()
-        
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MyGroupsController: UITableViewController, UISearchBarDelegate {
 
@@ -38,9 +39,28 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     let searchController = UISearchController(searchResultsController: nil)
     var filteredGroup: [String] = []
     var searchActive : Bool = false
+    var groups = [Group]()
+    var groupsService = GroupsService()
+    var allLastName = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        groupsService.sendRequest() { [weak self] groups in
+            if let self = self {
+                self.groups = groups
+                DispatchQueue.main.async {
+                    self.tableView?.reloadData()
+                }
+//                for user in users {
+//                    guard let character = user.lastName.first else { preconditionFailure("Bad lastName") }
+//                    self.allLastName.append(user.lastName)
+//                    if !self.characters.contains(String(character)) {
+//                        self.characters.append(String(character))
+//                    }
+//                }
+//                self.characters.sort()
+            }
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -78,7 +98,7 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         if searchActive {
             return filteredGroup.count
         } else {
-            return myGroups.count
+            return groups.count
         }
     }
     
@@ -86,10 +106,10 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! MyGroupCell
         if searchActive {
             cell.groupName.text = filteredGroup[indexPath.row]
-        } else { cell.groupName.text = myGroups[indexPath.row]}
+        } else { cell.groupName.text = groups[indexPath.row].name}
         //        let group = myGroups[indexPath.row]
         //        cell.groupName.text = group
-        if let nameAvatar = myGroupsFoto[myGroups[indexPath.row]] {
+        let nameAvatar = groups[indexPath.row].photo
             cell.fotoGroup.backgroundColor = UIColor.clear
             cell.fotoGroup.layer.shadowColor = UIColor.black.cgColor
             cell.fotoGroup.layer.shadowOffset = cell.shadowOffset
@@ -107,24 +127,24 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
             
             // add subcontent
             let photo = UIImageView()
-            photo.image = UIImage(named: nameAvatar)
+            photo.kf.setImage(with: URL(string: nameAvatar))
             photo.frame = borderView.bounds
             borderView.addSubview(photo)
             //cell.fotoGroup.image = UIImage(named: nameAvatar)
-        }
+        
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        // Если была нажата кнопка «Удалить»
-        if editingStyle == .delete {
-            // Удаляем группу из массива
-            let keyGroup = myGroups[indexPath.row]
-            myGroups.remove(at: indexPath.row)
-            myGroupsFoto.removeValue(forKey: keyGroup)
-            // И удаляем строку из таблицы
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.reloadData()
-        }
-    }
+//
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        // Если была нажата кнопка «Удалить»
+//        if editingStyle == .delete {
+//            // Удаляем группу из массива
+//            let keyGroup = myGroups[indexPath.row]
+//            myGroups.remove(at: indexPath.row)
+//            myGroupsFoto.removeValue(forKey: keyGroup)
+//            // И удаляем строку из таблицы
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//            tableView.reloadData()
+//        }
+//    }
 }

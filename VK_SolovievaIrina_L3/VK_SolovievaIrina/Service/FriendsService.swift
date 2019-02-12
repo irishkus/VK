@@ -33,13 +33,13 @@ class FriendsService {
                     return User(json: json)
                 }
                 completion(users)
-                users.forEach {
-                    print($0)
-                }
+//                users.forEach {
+//                    print($0)
+//                }
             //  completion(users)
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }        
+        }
     }
 }

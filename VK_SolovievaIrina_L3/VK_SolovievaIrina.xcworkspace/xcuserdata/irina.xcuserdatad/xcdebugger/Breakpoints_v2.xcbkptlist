@@ -2,4 +2,54 @@
 <Bucket
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VK_SolovievaIrina/Service/FotoService.swift"
+            timestampString = "571671963.615237"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "sendRequest(id:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VK_SolovievaIrina.FotoService.sendRequest(id: Swift.Int, completion: (Swift.Array&lt;VK_SolovievaIrina.Photo&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "VK_SolovievaIrina"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/irina/VK/VK_SolovievaIrina_L3/VK_SolovievaIrina/Service/FotoService.swift"
+                  timestampString = "571666628.500169"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "671">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in VK_SolovievaIrina.FotoService.sendRequest(id: Swift.Int, completion: (Swift.Array&lt;VK_SolovievaIrina.Photo&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "VK_SolovievaIrina"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/irina/VK/VK_SolovievaIrina_L3/VK_SolovievaIrina/Service/FotoService.swift"
+                  timestampString = "571666628.5028811"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "71">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

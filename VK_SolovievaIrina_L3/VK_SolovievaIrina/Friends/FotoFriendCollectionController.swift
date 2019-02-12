@@ -7,16 +7,29 @@
 //
 
 import UIKit
+import Kingfisher
 
 class FotoFriendCollectionController: UICollectionViewController {
     var fotoDelegate: [String] = []
+    var ownerId: Int = 0
 //    let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
 //    self.view.addGestureRecognizer(recognizer)
+    var photos = [Photo]()
+    var photosService = FotoService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //(_:0, _:0.5)
         self.navigationItem.backBarButtonItem?.title = "Закрыть"
+        print(ownerId)
+        photosService.sendRequest(id: ownerId) { [weak self] photos in
+            if let self = self {
+                self.photos = photos
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                }
+                print(photos)
+            }
+        }
       //  self.tabBarController?.tabBar.isHidden = true
       //  self.navigationController?.navigationBar.barStyle = .blackTranslucent
      //   let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onSwipe(_:)))
@@ -30,14 +43,14 @@ class FotoFriendCollectionController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return fotoDelegate.count
+        return photos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FotoCell", for: indexPath) as! FotoCollectionCell
       //  cell.superview?.bringSubviewToFront(cell)
     //    self.tabBarController?.tabBar.isHidden = true
-    //   self.navigationController?.isNavigationBarHidden = true
+     //  self.navigationController?.isNavigationBarHidden = true
 
         UIView.animate(withDuration: 0.5,
                        delay: 0,
@@ -48,12 +61,12 @@ class FotoFriendCollectionController: UICollectionViewController {
                         collectionView.backgroundColor = .white
                      //   collectionView.isScrollEnabled = false
         })
-        let foto = fotoDelegate[indexPath.row]
-        cell.allFoto.image = UIImage(named: foto)
-        self.navigationController?.navigationItem.backBarButtonItem?.title = "Закрыть"
-        self.navigationItem.title = "\(indexPath.row+1) из \(fotoDelegate.count)"
+        let photo = photos[indexPath.row]
+        //fotoDelegate[indexPath.row]
+        cell.allFoto.kf.setImage(with: URL(string: photo.url))
+      //  self.navigationController?.navigationItem.backBarButtonItem?.title = "Закрыть"
+      //  self.navigationItem.title = "\(indexPath.row+1) из \(fotoDelegate.count)"
         reloadInputViews()
-        
 
         return cell
     }
@@ -76,9 +89,6 @@ class FotoFriendCollectionController: UICollectionViewController {
             interactiveAnimator = UIViewPropertyAnimator(duration: 0.5,
                                                          curve: .linear,
                                                          animations: {
-                                             //               collectionView.performBatchUpdates(_ updates: let scale = CATransform3DScale(CATransform3DIdentity, 0.7, 0.7, 0),
-                                             //                                                  completion: self.collectionView.cellForItem(at: selectedIndexPath)!.transform = CATransform3DGetAffineTransform(scale))
-                                                           // self.collectionView.layer.anchorPoint = CGPoint(x: 1.0, y: 1.0)
                                                          let scale = CATransform3DScale(CATransform3DIdentity, 0.7, 0.7, 0)
                                                          self.collectionView.cellForItem(at: selectedIndexPath)!.transform = CATransform3DGetAffineTransform(scale)
             })
@@ -86,8 +96,6 @@ class FotoFriendCollectionController: UICollectionViewController {
             interactiveAnimator.pauseAnimation()
         case .changed:
             print("change")
-//            let translation = CABasicAnimation(keyPath: "center.x")
-//            translation.toValue = 100
 
             let translation = recognizer.translation(in: self.collectionView)
             interactiveAnimator.fractionComplete = translation.y/100

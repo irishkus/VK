@@ -8,9 +8,10 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 class GroupsService {
-    public func sendRequest() {
+    public func sendRequest(completion: @escaping ([Group]) -> Void) {
         let baseUrl = "https://api.vk.com"
         let path = "/method/groups.get"
         let sessionUser = UserSession.instance
@@ -20,13 +21,22 @@ class GroupsService {
             "extended": "1",
             "v": "5.92"
         ]
- 
+        
         let url = baseUrl+path
         
         Alamofire.request(url, method: .get, parameters: parameters).responseJSON { repsonse in
-            print("Список групп!")
-            print(repsonse.value ?? "")
-        }
-        
+            switch repsonse.result {
+            case .success(let value):
+                let json = JSON(value)
+                let groups = json["response"]["items"].arrayValue.map { json in
+                    return Group(json: json)
+                }
+                completion(groups)
+
+            //  completion(users)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }        
     }
 }

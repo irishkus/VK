@@ -10,10 +10,11 @@
 		1371AE7D431818CA454BE0B8 /* Pods_VK_SolovievaIrina.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2266C481E1D8D18A6BCBD043 /* Pods_VK_SolovievaIrina.framework */; };
 		17791138192E73DF5550E249 /* Pods_VK_SolovievaIrinaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7190856CE9233ADBA6756EF9 /* Pods_VK_SolovievaIrinaTests.framework */; };
 		8C06EF042202D766003D9865 /* CustomInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C06EF032202D766003D9865 /* CustomInteractiveTransition.swift */; };
+		8C07FE5022120AFD00B5177C /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07FE4F22120AFD00B5177C /* Group.swift */; };
+		8C07FE522212C96D00B5177C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07FE512212C96D00B5177C /* Photo.swift */; };
 		8C0CAAB5220CACBD0077046A /* GroupsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0CAAB4220CACBD0077046A /* GroupsService.swift */; };
 		8C0CAAB7220D8F1A0077046A /* SearchGroupsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0CAAB6220D8F1A0077046A /* SearchGroupsService.swift */; };
 		8C0CAABC220FF8120077046A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0CAABB220FF8120077046A /* User.swift */; };
-		8C0CAABE220FF8F40077046A /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0CAABD220FF8F40077046A /* UserResponse.swift */; };
 		8C102FE321FA320A00DD8744 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C102FE221FA320A00DD8744 /* LoadView.swift */; };
 		8C590DF1220C27D90078A95A /* VKLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C590DF0220C27D90078A95A /* VKLoginViewController.swift */; };
 		8C590DF4220C4D060078A95A /* FriendsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C590DF3220C4D060078A95A /* FriendsService.swift */; };
@@ -70,10 +71,11 @@
 		445DB1603E73BAF526991F61 /* Pods-VK_SolovievaIrinaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK_SolovievaIrinaUITests.release.xcconfig"; path = "Target Support Files/Pods-VK_SolovievaIrinaUITests/Pods-VK_SolovievaIrinaUITests.release.xcconfig"; sourceTree = "<group>"; };
 		7190856CE9233ADBA6756EF9 /* Pods_VK_SolovievaIrinaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VK_SolovievaIrinaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C06EF032202D766003D9865 /* CustomInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInteractiveTransition.swift; sourceTree = "<group>"; };
+		8C07FE4F22120AFD00B5177C /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		8C07FE512212C96D00B5177C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		8C0CAAB4220CACBD0077046A /* GroupsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsService.swift; sourceTree = "<group>"; };
 		8C0CAAB6220D8F1A0077046A /* SearchGroupsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGroupsService.swift; sourceTree = "<group>"; };
 		8C0CAABB220FF8120077046A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		8C0CAABD220FF8F40077046A /* UserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
 		8C102FE221FA320A00DD8744 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
 		8C590DF0220C27D90078A95A /* VKLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLoginViewController.swift; sourceTree = "<group>"; };
 		8C590DF3220C4D060078A95A /* FriendsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsService.swift; sourceTree = "<group>"; };
@@ -158,6 +160,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		8C07FE4E22120ACC00B5177C /* Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				8C0CAABB220FF8120077046A /* User.swift */,
+				8C07FE4F22120AFD00B5177C /* Group.swift */,
+				8C07FE512212C96D00B5177C /* Photo.swift */,
+			);
+			path = Mapping;
+			sourceTree = "<group>";
+		};
 		8C590DF2220C4CA30078A95A /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +219,7 @@
 		8CAAF35B21C635D3004AA630 /* VK_SolovievaIrina */ = {
 			isa = PBXGroup;
 			children = (
+				8C07FE4E22120ACC00B5177C /* Mapping */,
 				8C590DF0220C27D90078A95A /* VKLoginViewController.swift */,
 				8C590DF5220C57E00078A95A /* UserSession.swift */,
 				8C590DF2220C4CA30078A95A /* Service */,
@@ -221,8 +234,6 @@
 				8CAAF36821C635D5004AA630 /* LaunchScreen.storyboard */,
 				8CAAF36B21C635D5004AA630 /* Info.plist */,
 				8CAAF36321C635D3004AA630 /* VK_SolovievaIrina.xcdatamodeld */,
-				8C0CAABB220FF8120077046A /* User.swift */,
-				8C0CAABD220FF8F40077046A /* UserResponse.swift */,
 			);
 			path = VK_SolovievaIrina;
 			sourceTree = "<group>";
@@ -524,7 +535,6 @@
 				8C590DF1220C27D90078A95A /* VKLoginViewController.swift in Sources */,
 				8CAAF35F21C635D3004AA630 /* ViewController.swift in Sources */,
 				8C0CAAB5220CACBD0077046A /* GroupsService.swift in Sources */,
-				8C0CAABE220FF8F40077046A /* UserResponse.swift in Sources */,
 				8CF61E8321CE521300D9C21A /* MyFriendsCell.swift in Sources */,
 				8CF61E9321D2342800D9C21A /* AllGroupsCell.swift in Sources */,
 				8C590DF6220C57E00078A95A /* UserSession.swift in Sources */,
@@ -537,6 +547,7 @@
 				8CF61E8F21D233C200D9C21A /* MyGroupCell.swift in Sources */,
 				8CF61E8121CE2AD500D9C21A /* FotoFriendCollectionController.swift in Sources */,
 				8CF24CEF21E2A780006B51D4 /* MyNewsCell.swift in Sources */,
+				8C07FE522212C96D00B5177C /* Photo.swift in Sources */,
 				8CAAF36521C635D3004AA630 /* VK_SolovievaIrina.xcdatamodeld in Sources */,
 				8CF61E8D21D2335F00D9C21A /* MyGroupsController.swift in Sources */,
 				8CF61E9121D2340900D9C21A /* AllGroupsController.swift in Sources */,
@@ -547,6 +558,7 @@
 				8C590DF4220C4D060078A95A /* FriendsService.swift in Sources */,
 				8CF24CEB21E2A539006B51D4 /* MyNewsController.swift in Sources */,
 				8CAAF35D21C635D3004AA630 /* AppDelegate.swift in Sources */,
+				8C07FE5022120AFD00B5177C /* Group.swift in Sources */,
 				8CF24CE921E23E1F006B51D4 /* LikeControl.swift in Sources */,
 				8CF61E7B21CE298600D9C21A /* MyFriendsController.swift in Sources */,
 			);

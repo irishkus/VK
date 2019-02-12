@@ -26,6 +26,7 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     var users = [User]()
     var friendsService = FriendsService()
     var allLastName = [String]()
+    var ownerId: Int = 0
     
     var myFriends = ["Иванов Иван", "Петров Петр", "Сидоров Сидор", "Субботин Андрей", "Соколов Дмитрий", "Смирнов Станислав", "Суворов Петр", "Павлова Арина", "Полякова Диана", "Петухов Александр", "Устинова Татьяна", "Ургант Валерий", "Уваров Денис", "Исаев Алексей", "Искакова Галина", "Ильина Екатерина", "Панов Евгений", "Давлова Анастасия", "Потапов Сергей", "Вестов Юрий", "Попова Евгения", "Тимофеев Антон"]
     var fotoMyFriends = ["Иванов Иван": ["vk_logo","yellow", "red", "rose"], "Петров Петр": ["friend","green", "fir", "line"], "Сидоров Сидор": ["groups","orange", "blue", "heart"], "Субботин Андрей": ["yellow", "red"], "Соколов Дмитрий": ["green", "fir"], "Смирнов Станислав":["orange", "blue"], "Суворов Петр":["orange", "rose"], "Павлова Арина": ["orange"], "Полякова Диана": ["vk_logo","yellow"], "Петухов Александр": ["friend", "green"], "Устинова Татьяна": ["vk_logo"], "Ургант Валерий": ["friend"], "Уваров Денис": ["groups"], "Исаев Алексей": ["red"], "Искакова Галина": ["green"], "Ильина Екатерина": ["heart"], "Панов Евгений": ["line"], "Давлова Анастасия": ["yellow"], "Потапов Сергей": ["fir"], "Вестов Юрий": ["noLike"], "Попова Евгения": ["like"], "Тимофеев Антон": ["rose"]]
@@ -34,7 +35,7 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //    self.navigationController?.navigationBar.barStyle = .default
+         //   self.navigationController?.navigationBar.barStyle = .default
         friendsService.sendRequest() { [weak self] users in
             if let self = self {
                 self.users = users
@@ -42,7 +43,7 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                     self.tableView?.reloadData()
                 }
                 for user in users {
-                    guard let character = user.lastName.first else { preconditionFailure("Bad secondName") }
+                    guard let character = user.lastName.first else { preconditionFailure("Bad lastName") }
                     self.allLastName.append(user.lastName)
                     if !self.characters.contains(String(character)) {
                         self.characters.append(String(character))
@@ -186,12 +187,19 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                     myFriendsCharacter = filteredFriends
                 }
                 else {
-                    myFriendsCharacter = myFriends.filter {$0[$0.startIndex] == Character(characters[indexPath.section]) }}
+                    myFriendsCharacter = allLastName.filter {$0.first == Character(characters[indexPath.section]) }}
                 // Получаем друга по индексу
                 let friend = myFriendsController.myFriendsCharacter[indexPath.row]
-                if let fotoDelegate = myFriendsController.fotoMyFriends[friend] {
-                    fotoFriendsController.fotoDelegate = fotoDelegate
+                var indexUser: Int = 0
+                for index in 0...users.count-1 {
+                    if users[index].lastName == friend {
+                        indexUser = index
+                    }
                 }
+                //let user = users[indexUser]
+                 ownerId = myFriendsController.users[indexUser].id
+                    fotoFriendsController.ownerId = ownerId
+                print(ownerId)
             }
         }
     }
