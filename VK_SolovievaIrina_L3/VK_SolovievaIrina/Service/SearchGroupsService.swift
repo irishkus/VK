@@ -17,7 +17,7 @@ class SearchGroupsService {
         
         let parameters: Parameters = [
             "access_token": sessionUser.token,
-            "q": "iOS",
+            "q": "а",
             "v": "5.92"
         ]
         

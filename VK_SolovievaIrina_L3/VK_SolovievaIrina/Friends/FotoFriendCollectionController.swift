@@ -19,15 +19,13 @@ class FotoFriendCollectionController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.backBarButtonItem?.title = "Закрыть"
-        print(ownerId)
+        //self.navigationItem.backBarButtonItem?.title = "Закрыть"
         photosService.sendRequest(id: ownerId) { [weak self] photos in
             if let self = self {
                 self.photos = photos
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
                 }
-                print(photos)
             }
         }
       //  self.tabBarController?.tabBar.isHidden = true

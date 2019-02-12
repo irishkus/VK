@@ -34,14 +34,13 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     }
     
     @IBOutlet weak var searchBar: UISearchBar!
-    var myGroups = ["Котики", "Собачки", "Кролики"]
+    var myGroups: [String] = []
     var myGroupsFoto = ["Котики": "red", "Собачки": "green", "Кролики": "orange"]
     let searchController = UISearchController(searchResultsController: nil)
     var filteredGroup: [String] = []
     var searchActive : Bool = false
     var groups = [Group]()
     var groupsService = GroupsService()
-    var allLastName = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,14 +50,10 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
                 DispatchQueue.main.async {
                     self.tableView?.reloadData()
                 }
-//                for user in users {
-//                    guard let character = user.lastName.first else { preconditionFailure("Bad lastName") }
-//                    self.allLastName.append(user.lastName)
-//                    if !self.characters.contains(String(character)) {
-//                        self.characters.append(String(character))
-//                    }
-//                }
-//                self.characters.sort()
+                for group in groups {
+                    self.myGroups.append(group.name)
+                }
+                self.myGroups.sort()
             }
         }
     }

@@ -21,7 +21,7 @@ class FotoService {
             "no_service_albums": "1",
             "owner_id": id,
             "v": "5.92",
-            "count": 100
+            "count": 50
         ]
 
         let url = baseUrl+path

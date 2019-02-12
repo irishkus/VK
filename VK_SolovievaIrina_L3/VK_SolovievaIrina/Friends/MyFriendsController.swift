@@ -8,34 +8,24 @@
 
 import UIKit
 import Kingfisher
-//extension MyFriendsController: UISearchResultsUpdating {
-//    // MARK: - UISearchResultsUpdating Delegate
-//    func updateSearchResults(for searchController: UISearchController) {
-//        // TODO
-//    }
-//}
 
 class MyFriendsController: UITableViewController, UISearchBarDelegate {
     
     @IBOutlet weak var searchFriends: UISearchBar!
     let searchController = UISearchController(searchResultsController: nil)
     var searchActive : Bool = false
-    var fotoDelegate = [String]()
     private var shadowLayer: CAShapeLayer!
     var filteredFriends: [String] = []
     var users = [User]()
     var friendsService = FriendsService()
     var allLastName = [String]()
     var ownerId: Int = 0
-    
-    var myFriends = ["Иванов Иван", "Петров Петр", "Сидоров Сидор", "Субботин Андрей", "Соколов Дмитрий", "Смирнов Станислав", "Суворов Петр", "Павлова Арина", "Полякова Диана", "Петухов Александр", "Устинова Татьяна", "Ургант Валерий", "Уваров Денис", "Исаев Алексей", "Искакова Галина", "Ильина Екатерина", "Панов Евгений", "Давлова Анастасия", "Потапов Сергей", "Вестов Юрий", "Попова Евгения", "Тимофеев Антон"]
-    var fotoMyFriends = ["Иванов Иван": ["vk_logo","yellow", "red", "rose"], "Петров Петр": ["friend","green", "fir", "line"], "Сидоров Сидор": ["groups","orange", "blue", "heart"], "Субботин Андрей": ["yellow", "red"], "Соколов Дмитрий": ["green", "fir"], "Смирнов Станислав":["orange", "blue"], "Суворов Петр":["orange", "rose"], "Павлова Арина": ["orange"], "Полякова Диана": ["vk_logo","yellow"], "Петухов Александр": ["friend", "green"], "Устинова Татьяна": ["vk_logo"], "Ургант Валерий": ["friend"], "Уваров Денис": ["groups"], "Исаев Алексей": ["red"], "Искакова Галина": ["green"], "Ильина Екатерина": ["heart"], "Панов Евгений": ["line"], "Давлова Анастасия": ["yellow"], "Потапов Сергей": ["fir"], "Вестов Юрий": ["noLike"], "Попова Евгения": ["like"], "Тимофеев Антон": ["rose"]]
     var characters: [String] =  []
     var myFriendsCharacter = [""]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         //   self.navigationController?.navigationBar.barStyle = .default
+        //   self.navigationController?.navigationBar.barStyle = .default
         friendsService.sendRequest() { [weak self] users in
             if let self = self {
                 self.users = users
@@ -56,7 +46,7 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != "" {
-            filteredFriends = myFriends.filter({(text) -> Bool in
+            filteredFriends = allLastName.filter({(text) -> Bool in
                 let tmp: NSString = text as NSString
                 let range = tmp.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
                 return range.location != NSNotFound
@@ -123,8 +113,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
             myFriendsCharacter = allLastName.filter {$0.first == Character(characters[indexPath.section]) }
         }
         let friend = myFriendsCharacter[indexPath.row]
-        //cell.friendName.text = friend
-        //self.navigationController?.navigationBar.barStyle = .default
         var indexUser: Int = 0
         for index in 0...users.count-1 {
             if users[index].lastName == friend {
@@ -140,7 +128,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
         photo.kf.setImage(with: URL(string: nameAvatar))
         photo.frame = cell.containerView.bounds
         cell.containerView.addSubview(photo)
-    
         return cell
         
     }
@@ -196,9 +183,8 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                         indexUser = index
                     }
                 }
-                //let user = users[indexUser]
-                 ownerId = myFriendsController.users[indexUser].id
-                    fotoFriendsController.ownerId = ownerId
+                ownerId = myFriendsController.users[indexUser].id
+                fotoFriendsController.ownerId = ownerId
                 print(ownerId)
             }
         }

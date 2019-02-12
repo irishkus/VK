@@ -43,155 +43,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wq7-r7-egY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2106" y="774"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VK_SolovievaIrina" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLF-WY-ZdT" colorLabel="IBBuiltInLabel-Blue">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
-                                <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Пароль" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sfN-Q8-ra6">
-                                        <rect key="frame" x="20" y="270" width="295" height="21"/>
-                                        <color key="backgroundColor" red="0.32188650683373371" green="0.51097913140176121" blue="0.71499646971732855" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" red="0.74082416659999994" green="0.85204246130000005" blue="0.90331535529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="textColor" red="0.74082416659847505" green="0.85204246127827354" blue="0.90331535532994922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" textContentType="password"/>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FtD-TQ-MOO" customClass="ButtonWithShadow" customModule="VK_SolovievaIrina">
-                                        <rect key="frame" x="20" y="331" width="335" height="51"/>
-                                        <color key="backgroundColor" red="0.36313864385955907" green="0.58783451621138938" blue="0.82199202807563454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="15"/>
-                                        <state key="normal" title="Войти">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <color key="titleShadowColor" red="0.32188650680000003" green="0.51097913139999995" blue="0.71499646969999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="loginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7bf-Kc-R5S"/>
-                                            <segue destination="TjU-Nx-wC2" kind="show" id="b4A-tu-cky"/>
-                                        </connections>
-                                    </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vk_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Kae-gp-Ong">
-                                        <rect key="frame" x="137" y="70" width="101" height="90"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="101" id="0pW-LV-2t2"/>
-                                            <constraint firstAttribute="height" constant="90" id="cTn-Td-DDG"/>
-                                        </constraints>
-                                    </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="E-mail или телефон" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Kcq-Rm-5U9">
-                                        <rect key="frame" x="20" y="210" width="335" height="20"/>
-                                        <color key="backgroundColor" red="0.32188650683373371" green="0.51097913140176121" blue="0.71499646971732855" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" red="0.74082416659999994" green="0.85204246130000005" blue="0.90331535529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="textColor" red="0.74082416659847505" green="0.85204246127827354" blue="0.90331535532994922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lft-qK-aAa">
-                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="812"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" id="q3P-Ii-kZv"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ifr-C6-vaq">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" id="2kI-Ih-SgD"/>
-                                        </constraints>
-                                    </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XGi-qz-aUZ">
-                                        <rect key="frame" x="162.66666666666666" y="402" width="50" height="10"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="14m-Uj-8gs" customClass="LoadView" customModule="VK_SolovievaIrina" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="10" height="10"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="10" id="sqF-Tn-Hz5"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gDd-wl-MPr" customClass="LoadView" customModule="VK_SolovievaIrina" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="0.0" width="10" height="10"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="10" id="krl-fC-1Xq"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iaN-9u-i7m" customClass="LoadView" customModule="VK_SolovievaIrina" customModuleProvider="target">
-                                                <rect key="frame" x="40" y="0.0" width="10" height="10"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="10" id="VEz-Xj-Vb4"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="10" id="ebj-5Z-pZ8"/>
-                                        </constraints>
-                                    </stackView>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vdl-88-BQU" customClass="LoadNewView" customModule="VK_SolovievaIrina" customModuleProvider="target">
-                                        <rect key="frame" x="137" y="475" width="100" height="82"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                </subviews>
-                                <color key="tintColor" red="0.3631386439" green="0.58783451620000005" blue="0.82199202810000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="Ifr-C6-vaq" firstAttribute="top" secondItem="kLF-WY-ZdT" secondAttribute="top" id="2IH-g0-Dgy"/>
-                                    <constraint firstAttribute="bottom" secondItem="lft-qK-aAa" secondAttribute="bottom" id="3a4-0C-rMf"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ifr-C6-vaq" secondAttribute="trailing" id="7Sz-z2-9gM"/>
-                                    <constraint firstItem="FtD-TQ-MOO" firstAttribute="leading" secondItem="kLF-WY-ZdT" secondAttribute="leading" constant="20" id="EA0-Sh-OFt"/>
-                                    <constraint firstItem="XGi-qz-aUZ" firstAttribute="top" secondItem="FtD-TQ-MOO" secondAttribute="bottom" constant="20" id="ET5-a1-Anz"/>
-                                    <constraint firstItem="lft-qK-aAa" firstAttribute="top" secondItem="kLF-WY-ZdT" secondAttribute="top" id="Ear-4B-mGs"/>
-                                    <constraint firstItem="lft-qK-aAa" firstAttribute="leading" secondItem="kLF-WY-ZdT" secondAttribute="leading" id="G2Q-Oe-Vrf"/>
-                                    <constraint firstItem="Kae-gp-Ong" firstAttribute="top" secondItem="kLF-WY-ZdT" secondAttribute="top" constant="70" id="Gsx-GS-x0p"/>
-                                    <constraint firstAttribute="trailing" secondItem="Kcq-Rm-5U9" secondAttribute="trailing" constant="20" id="K9A-K6-xcg"/>
-                                    <constraint firstItem="FtD-TQ-MOO" firstAttribute="top" secondItem="sfN-Q8-ra6" secondAttribute="bottom" constant="40" id="Kl8-Tg-mOJ"/>
-                                    <constraint firstItem="sfN-Q8-ra6" firstAttribute="top" secondItem="Kcq-Rm-5U9" secondAttribute="bottom" constant="40" id="LJe-eA-XXX"/>
-                                    <constraint firstAttribute="trailing" secondItem="FtD-TQ-MOO" secondAttribute="trailing" constant="20" id="N9A-lz-BHA"/>
-                                    <constraint firstItem="Ifr-C6-vaq" firstAttribute="leading" secondItem="kLF-WY-ZdT" secondAttribute="leading" id="RRa-Tl-RKC"/>
-                                    <constraint firstItem="Kae-gp-Ong" firstAttribute="centerX" secondItem="kLF-WY-ZdT" secondAttribute="centerX" id="bpq-0o-Rwd"/>
-                                    <constraint firstItem="XGi-qz-aUZ" firstAttribute="centerX" secondItem="kLF-WY-ZdT" secondAttribute="centerX" id="rfe-iL-npg"/>
-                                    <constraint firstItem="sfN-Q8-ra6" firstAttribute="leading" secondItem="kLF-WY-ZdT" secondAttribute="leading" constant="20" id="uVv-Da-zI1"/>
-                                    <constraint firstItem="Kcq-Rm-5U9" firstAttribute="top" secondItem="Kae-gp-Ong" secondAttribute="bottom" constant="50" id="vHB-iS-uwa"/>
-                                    <constraint firstItem="Kcq-Rm-5U9" firstAttribute="leading" secondItem="kLF-WY-ZdT" secondAttribute="leading" constant="20" id="wg3-Kn-Qif"/>
-                                    <constraint firstAttribute="trailing" secondItem="sfN-Q8-ra6" secondAttribute="trailing" constant="60" id="xG2-df-DxG"/>
-                                    <constraint firstAttribute="trailing" secondItem="Kcq-Rm-5U9" secondAttribute="trailing" constant="20" id="ytm-TQ-BNQ"/>
-                                </constraints>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="kLF-WY-ZdT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="2Z2-iv-zRg"/>
-                            <constraint firstItem="lft-qK-aAa" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="38e-zt-kRJ"/>
-                            <constraint firstAttribute="trailing" secondItem="kLF-WY-ZdT" secondAttribute="trailing" id="804-6L-3aP"/>
-                            <constraint firstItem="kLF-WY-ZdT" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="LfG-i5-mqO"/>
-                            <constraint firstItem="kLF-WY-ZdT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="guz-t4-ftm"/>
-                            <constraint firstItem="Ifr-C6-vaq" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="hyw-R1-SU8"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="Ftv-Vp-8Kv"/>
-                    <connections>
-                        <outlet property="loadView1" destination="14m-Uj-8gs" id="RlS-P1-6uF"/>
-                        <outlet property="loadView2" destination="gDd-wl-MPr" id="le0-Bw-RnT"/>
-                        <outlet property="loadView3" destination="iaN-9u-i7m" id="2Lj-Ic-2Lu"/>
-                        <outlet property="loginInput" destination="Kcq-Rm-5U9" id="txK-M4-3qk"/>
-                        <outlet property="logoImage" destination="Kae-gp-Ong" id="zVH-OB-vjp"/>
-                        <outlet property="passwordInput" destination="sfN-Q8-ra6" id="nOr-oU-vSZ"/>
-                        <outlet property="scrollView" destination="kLF-WY-ZdT" id="EMc-5x-VSp"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2106.4000000000001" y="97.536945812807886"/>
+            <point key="canvasLocation" x="2098" y="98"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ye9-o4-8hi">
@@ -432,7 +284,7 @@
                         <color key="tintColor" red="0.3631386439" green="0.58783451620000005" blue="0.82199202810000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" misplaced="YES" placeholder="Поиск" showsCancelButton="YES" id="dlv-lv-NP1">
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Поиск" showsCancelButton="YES" id="dlv-lv-NP1">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.3631386439" green="0.58783451620000005" blue="0.82199202810000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -808,10 +660,6 @@
         <image name="groups" width="31" height="28"/>
         <image name="news" width="24" height="26"/>
         <image name="share" width="32" height="28"/>
-        <image name="vk_logo" width="202" height="160"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="SRA-Zu-eLg"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.74082416659999994" green="0.85204246130000005" blue="0.90331535529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

@@ -70,8 +70,8 @@ class VKLoginViewController: UIViewController {
 //            photo.sendRequest()
 //            let groups = GroupsService()
 //            groups.sendRequest()
-//            let search = SearchGroupsService()
-//            search.sendRequest()
+            let search = SearchGroupsService()
+            search.sendRequest()
             performSegue(withIdentifier: "VKClient", sender: nil)
             
             decisionHandler(.cancel)
