@@ -129,17 +129,4 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         
         return cell
     }
-//
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        // Если была нажата кнопка «Удалить»
-//        if editingStyle == .delete {
-//            // Удаляем группу из массива
-//            let keyGroup = myGroups[indexPath.row]
-//            myGroups.remove(at: indexPath.row)
-//            myGroupsFoto.removeValue(forKey: keyGroup)
-//            // И удаляем строку из таблицы
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//            tableView.reloadData()
-//        }
-//    }
 }

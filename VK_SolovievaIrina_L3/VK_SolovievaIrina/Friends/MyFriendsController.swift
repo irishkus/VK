@@ -33,10 +33,12 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                     self.tableView?.reloadData()
                 }
                 for user in users {
+                    if user.lastName != "" {
                     guard let character = user.lastName.first else { preconditionFailure("Bad lastName") }
                     self.allLastName.append(user.lastName)
                     if !self.characters.contains(String(character)) {
                         self.characters.append(String(character))
+                    }
                     }
                 }
                 self.characters.sort()
