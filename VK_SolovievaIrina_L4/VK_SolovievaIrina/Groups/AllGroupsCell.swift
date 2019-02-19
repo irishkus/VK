@@ -14,37 +14,20 @@ class AllGroupsCell: UITableViewCell {
     @IBOutlet weak var allGroupFoto: UIImageView!
     
     @IBInspectable var shadowOffset: CGSize = CGSize(width: 3, height: 3)
-    //        {
-    //        didSet {
-    //            setNeedsDisplay()
-    //        }
-    //    }
-    
-    /// Прозрачность тени
+
+    // Прозрачность тени
     @IBInspectable var shadowOpacity: Float = 0.3
-    //        {
-    //        didSet {
-    //            setNeedsDisplay()
-    //        }
-    //    }
-    
-    /// Радиус блура тени
+
+    //Радиус блура тени
     @IBInspectable var shadowRadius: CGFloat = 10
-    //        {
-    //        didSet {
-    //            setNeedsDisplay()
-    //        }
-    //    }
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

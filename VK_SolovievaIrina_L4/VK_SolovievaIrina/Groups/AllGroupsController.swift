@@ -24,8 +24,6 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
     var allGroupsFoto = ["Абстракция": "line", "Новый год": "fir", "Цветы": "rose", "Любовь": "heart", "Котики": "red", "Собачки": "green", "Кролики": "orange"]
     var filteredGroup: [String] = []
     var searchActive : Bool = false
-
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,13 +49,7 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
         searchBar.text = ""
         searchActive = false
         tableView.reloadData()
-    }
-
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
-//    }
-//    
+    }  
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
