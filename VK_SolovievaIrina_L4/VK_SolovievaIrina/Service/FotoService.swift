@@ -26,7 +26,9 @@ class FotoService {
 
         let url = baseUrl+path
 
-
+//        Alamofire.request(url, method: .get, parameters: parameters).responseJSON { repsonse in
+//            print(repsonse.value!)
+//        }
         
         Alamofire.request(url, method: .get, parameters: parameters).responseJSON { repsonse in
             switch repsonse.result {
@@ -43,7 +45,7 @@ class FotoService {
                 }
                 photos = sortPhoto
                 completion(photos)
-//                                photos.forEach {
+//                               photos.forEach. {
 //                                    print($0)
 //                                }
             case .failure(let error):
