@@ -16,6 +16,7 @@
 		8C0CAAB7220D8F1A0077046A /* SearchGroupsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0CAAB6220D8F1A0077046A /* SearchGroupsService.swift */; };
 		8C0CAABC220FF8120077046A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0CAABB220FF8120077046A /* User.swift */; };
 		8C102FE321FA320A00DD8744 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C102FE221FA320A00DD8744 /* LoadView.swift */; };
+		8C19CA8A222440570042BD62 /* RealmProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C19CA89222440570042BD62 /* RealmProvider.swift */; };
 		8C590DF1220C27D90078A95A /* VKLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C590DF0220C27D90078A95A /* VKLoginViewController.swift */; };
 		8C590DF4220C4D060078A95A /* FriendsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C590DF3220C4D060078A95A /* FriendsService.swift */; };
 		8C590DF6220C57E00078A95A /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C590DF5220C57E00078A95A /* UserSession.swift */; };
@@ -77,6 +78,7 @@
 		8C0CAAB6220D8F1A0077046A /* SearchGroupsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGroupsService.swift; sourceTree = "<group>"; };
 		8C0CAABB220FF8120077046A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8C102FE221FA320A00DD8744 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
+		8C19CA89222440570042BD62 /* RealmProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProvider.swift; sourceTree = "<group>"; };
 		8C590DF0220C27D90078A95A /* VKLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLoginViewController.swift; sourceTree = "<group>"; };
 		8C590DF3220C4D060078A95A /* FriendsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsService.swift; sourceTree = "<group>"; };
 		8C590DF5220C57E00078A95A /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				8C590DF3220C4D060078A95A /* FriendsService.swift */,
+				8C19CA89222440570042BD62 /* RealmProvider.swift */,
 				8C590DF7220C88AB0078A95A /* FotoService.swift */,
 				8C0CAAB4220CACBD0077046A /* GroupsService.swift */,
 				8C0CAAB6220D8F1A0077046A /* SearchGroupsService.swift */,
@@ -544,6 +547,7 @@
 				8C590DF6220C57E00078A95A /* UserSession.swift in Sources */,
 				8C0CAABC220FF8120077046A /* User.swift in Sources */,
 				8C660B5521F35A9F00B4D903 /* MyNewsLayout.swift in Sources */,
+				8C19CA8A222440570042BD62 /* RealmProvider.swift in Sources */,
 				8C9D98C621F4B05C001862D2 /* MyNewsColCell.swift in Sources */,
 				8C590DF8220C88AB0078A95A /* FotoService.swift in Sources */,
 				8C0CAAB7220D8F1A0077046A /* SearchGroupsService.swift in Sources */,

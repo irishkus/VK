@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import RealmSwift
 
 class MyGroupsController: UITableViewController, UISearchBarDelegate {
 
@@ -39,14 +40,16 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     let searchController = UISearchController(searchResultsController: nil)
     var filteredGroup = [Group]()
     var searchActive : Bool = false
-    var groups = [Group]()
+    //var groups = [Group]()
     var groupsService = GroupsService()
+    
+    var groups: Results<Group>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         groupsService.sendRequest() { [weak self] groups in
             if let self = self {
-                self.groups = groups
+                RealmProvider.save(items: groups)
                 DispatchQueue.main.async {
                     self.tableView?.reloadData()
                 }
@@ -56,12 +59,21 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
                 self.myGroups.sort()
             }
         }
+        let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+        //let realm = try! Realm(configuration: config)
+        do {
+            let realm = try Realm(configuration: config)
+            groups = realm.objects(Group.self)
+        } catch {
+            print(error)
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredGroup = []
         if searchText != "" {
-            for group in groups {
+            guard let groupsOpt = groups else { preconditionFailure("Groups is empty ") }
+            for group in groupsOpt {
                 let tmp: NSString = group.name as NSString
                 let range = tmp.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
                 if range.location != NSNotFound {
@@ -96,7 +108,7 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         if searchActive {
             return filteredGroup.count
         } else {
-            return groups.count
+            return groups?.count ?? 0
         }
     }
     
@@ -106,8 +118,8 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         if searchActive {
             cell.groupName.text = filteredGroup[indexPath.row].name
             nameAvatar = filteredGroup[indexPath.row].photo
-        } else { cell.groupName.text = groups[indexPath.row].name
-            nameAvatar = groups[indexPath.row].photo
+        } else { cell.groupName.text = groups?[indexPath.row].name ?? ""
+            nameAvatar = groups?[indexPath.row].photo ?? ""
         }
         //        let group = myGroups[indexPath.row]
         //        cell.groupName.text = group

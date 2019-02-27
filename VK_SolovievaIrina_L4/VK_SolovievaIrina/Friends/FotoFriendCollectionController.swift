@@ -8,13 +8,15 @@
 
 import UIKit
 import Kingfisher
+import RealmSwift
 
 class FotoFriendCollectionController: UICollectionViewController {
     var fotoDelegate: [String] = []
     var ownerId: Int = 0
+    var owner: User?
 //    let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
 //    self.view.addGestureRecognizer(recognizer)
-    var photos = [Photo]()
+    private var photos: Results<Photo>?
     var photosService = FotoService()
     
     override func viewDidLoad() {
@@ -22,7 +24,11 @@ class FotoFriendCollectionController: UICollectionViewController {
         //self.navigationItem.backBarButtonItem?.title = "Закрыть"
         photosService.sendRequest(id: ownerId) { [weak self] photos in
             if let self = self {
-                self.photos = photos
+                for photo in photos {
+                    photo.owner = self.owner
+                }
+                RealmProvider.save(items: photos)
+                //self.photos = photos
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
                 }
@@ -32,6 +38,14 @@ class FotoFriendCollectionController: UICollectionViewController {
       //  self.navigationController?.navigationBar.barStyle = .blackTranslucent
      //   let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onSwipe(_:)))
       //  self.collectionView.addGestureRecognizer(recognizer)
+        
+        let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+        do {
+            let realm = try Realm(configuration: config)
+            photos = realm.objects(Photo.self).filter("owner == %@", self.owner!)
+        } catch {
+            print(error)
+        }
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -41,7 +55,7 @@ class FotoFriendCollectionController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return photos.count
+        return photos?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -59,9 +73,9 @@ class FotoFriendCollectionController: UICollectionViewController {
                         collectionView.backgroundColor = .white
                      //   collectionView.isScrollEnabled = false
         })
-        let photo = photos[indexPath.row]
+        let photo = photos?[indexPath.row]
         //fotoDelegate[indexPath.row]
-        cell.allFoto.kf.setImage(with: URL(string: photo.url))
+        cell.allFoto.kf.setImage(with: URL(string: photo?.url ?? ""))
       //  self.navigationController?.navigationItem.backBarButtonItem?.title = "Закрыть"
       //  self.navigationItem.title = "\(indexPath.row+1) из \(fotoDelegate.count)"
         reloadInputViews()

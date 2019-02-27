@@ -14,13 +14,17 @@ import RealmSwift
 class Photo : Object {
 
     @objc dynamic var url : String = ""
-    @objc dynamic var height : Int = 0
+    @objc dynamic var id : Int = 0
+    @objc dynamic var owner: User?
 
     convenience init(json: JSON)  {
         self.init()
         self.url = json["sizes"][4]["url"].stringValue
-        self.height = json["sizes"][4]["height"].intValue
-        
+        self.id = json["id"].intValue
+    }
+    
+    override static func primaryKey() -> String {
+        return "id"
     }
 }
 

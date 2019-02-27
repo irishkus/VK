@@ -32,12 +32,8 @@ class FriendsService {
                 let users = json["response"]["items"].arrayValue.map { json -> User in
                     return User(json: json)
                 }
-
                 completion(users)
-//                users.forEach {
-//                    print($0)
-//                }
-            //  completion(users)
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }

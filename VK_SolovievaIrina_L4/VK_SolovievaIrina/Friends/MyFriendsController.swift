@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import RealmSwift
 
 class MyFriendsController: UITableViewController, UISearchBarDelegate {
     
@@ -16,7 +17,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     let searchController = UISearchController(searchResultsController: nil)
     var searchActive : Bool = false
     var ownerId: Int = 0
-    var users = [User]()
     var friendsService = FriendsService()
     var arrayFilteredFriends: [String] = []
     var arrayAllLastName = [String]()
@@ -25,12 +25,14 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     
     private var shadowLayer: CAShapeLayer!
     private var indexUser: Int = 0
+    private var users: Results<User>?
+    var owner: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         friendsService.sendRequest() { [weak self] users in
             if let self = self {
-                self.users = users
+                RealmProvider.save(items: users)
                 DispatchQueue.main.async {
                     self.tableView?.reloadData()
                 }
@@ -45,6 +47,14 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                 }
                 self.arrayCharacters.sort()
             }
+        }
+        let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+
+        do {
+            let realm = try Realm(configuration: config)
+            users = realm.objects(User.self)
+        } catch {
+            print(error)
         }
     }
     
@@ -83,12 +93,13 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
         }
         let friend = arrayMyFriendsCharacter[indexPath.row]
         //определяю индекс текущего друга
-        for index in 0...users.count-1 {
-            if users[index].lastName == friend {
+        guard let friends = users else { preconditionFailure("Friends is empty ") }
+        for index in 0...friends.count-1 {
+            if friends[index].lastName == friend {
                 indexUser = index
             }
         }
-        let user = users[indexUser]
+        let user = friends[indexUser]
         //заполняю имя друга
         cell.friendName.text = user.firstName + " " + user.lastName
         cell.layer.backgroundColor = UIColor.clear.cgColor
@@ -128,7 +139,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
             cell.frame.size.width = widhtCell
         }
     }
-    
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         //опеределяю заголовки у секций таблицы
@@ -181,14 +191,17 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                 // Получаю друга по индексу
                 let friend = myFriendsController.arrayMyFriendsCharacter[indexPath.row]
                 var indexUser: Int = 0
-                for index in 0...users.count-1 {
-                    if users[index].lastName == friend {
+                guard let friends = users else { preconditionFailure("Friends is empty ") }
+                for index in 0...friends.count-1 {
+                    if friends[index].lastName == friend {
                         indexUser = index
                     }
                 }
                 //передаю ID друга в следующий контроллер
-                ownerId = myFriendsController.users[indexUser].id
+                ownerId = myFriendsController.users?[indexUser].id ?? 0
                 fotoFriendsController.ownerId = ownerId
+                owner = myFriendsController.users?[indexUser]
+                fotoFriendsController.owner = owner
             }
         }
     }
