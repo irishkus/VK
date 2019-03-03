@@ -9,6 +9,7 @@
 import RealmSwift
 
 class RealmProvider {
+    static let deleteIfMigration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
     
     static func save<T: Object>(items: [T],
                                 config: Realm.Configuration = Realm.Configuration(deleteRealmIfMigrationNeeded: true),
@@ -16,7 +17,7 @@ class RealmProvider {
         print(config.fileURL!)
         
         do {
-            let realm = try Realm(configuration: config)
+            let realm = try Realm(configuration: self.deleteIfMigration)
             
             try realm.write {
                 realm.add(items, update: update)
@@ -28,15 +29,17 @@ class RealmProvider {
         }
     }
     
-    func greet<T: MyProtocol>(item: T) {
-        item.sayHello()
-    }
-    
-    func greet(item: MyProtocol) {
-        item.sayHello()
+    static func get<T: Object>(_ type: T.Type,
+                               config: Realm.Configuration = Realm.Configuration.defaultConfiguration)
+        -> Results<T>? {
+            do {
+                let realm = try Realm(configuration: self.deleteIfMigration)
+                return realm.objects(type)
+            } catch {
+                print(error)
+            }
+            return nil
     }
 }
 
-protocol MyProtocol {
-    func sayHello()
-}
+

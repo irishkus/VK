@@ -45,7 +45,7 @@ class FotoService {
                 }
                 photos = sortPhoto
                 completion(photos)
-//                               photos.forEach. {
+//                               photos.forEach {
 //                                    print($0)
 //                                }
             case .failure(let error):

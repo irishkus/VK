@@ -103,13 +103,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      //  animateAuthButton()
+       
+       // animateAuthButton()
         view.backgroundColor = #colorLiteral(red: 0.3218865068, green: 0.5109791314, blue: 0.7149964697, alpha: 1)
         // жест нажатия
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         // присваиваем его UIScrollVIew
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
-        
+
         loginInput.attributedPlaceholder = NSAttributedString(string: "E-mail или телефон",
                                                                attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.7408241666, green: 0.8520424613, blue: 0.9033153553, alpha: 1)])
         passwordInput.attributedPlaceholder = NSAttributedString(string: "Пароль",

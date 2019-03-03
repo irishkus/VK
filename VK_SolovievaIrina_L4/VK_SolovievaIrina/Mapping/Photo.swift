@@ -15,7 +15,7 @@ class Photo : Object {
 
     @objc dynamic var url : String = ""
     @objc dynamic var id : Int = 0
-    @objc dynamic var owner: User?
+    var owner = LinkingObjects(fromType: User.self, property: "photos")//: User?
 
     convenience init(json: JSON)  {
         self.init()

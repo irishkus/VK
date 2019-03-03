@@ -22,39 +22,52 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     var arrayAllLastName = [String]()
     var arrayCharacters: [String] =  []
     var arrayMyFriendsCharacter = [""]
+    var users: Results<User>?
+    var notificationToken: NotificationToken?
+    var owner: User?
+    var photosService = FotoService()
     
     private var shadowLayer: CAShapeLayer!
     private var indexUser: Int = 0
-    private var users: Results<User>?
-    var owner: User?
+    
+//    var owner = LinkingObjects(fromType: User.self, property: "allPhotosFriend")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        friendsService.sendRequest() { [weak self] users in
-            if let self = self {
-                RealmProvider.save(items: users)
-                DispatchQueue.main.async {
-                    self.tableView?.reloadData()
+        guard let usersGet = RealmProvider.get(User.self) else {return}
+        users = usersGet
+        for user in usersGet {
+            if user.lastName != "" {
+                guard let character = user.lastName.first else { preconditionFailure("Bad lastName") }
+                self.arrayAllLastName.append(user.lastName)
+                if !self.arrayCharacters.contains(String(character)) {
+                    self.arrayCharacters.append(String(character))
                 }
-                for user in users {
-                    if user.lastName != "" {
-                        guard let character = user.lastName.first else { preconditionFailure("Bad lastName") }
-                        self.arrayAllLastName.append(user.lastName)
-                        if !self.arrayCharacters.contains(String(character)) {
-                            self.arrayCharacters.append(String(character))
-                        }
-                    }
-                }
-                self.arrayCharacters.sort()
             }
         }
-        let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+        self.arrayCharacters.sort()
+        notificationToken = usersGet.observe { [weak self] changes in
+            guard let self = self else { return }
+            switch changes {
+            case .initial(_):
+                self.tableView.reloadData()
+            case .update(_, let dels, let ins, let mods):
+                print(dels)
+                print(ins)
+                print(mods)
+                self.tableView.beginUpdates()
+                self.tableView.reloadData()
+//                self.tableView.insertRows(at: ins.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+//                self.tableView.deleteRows(at: dels.map({ IndexPath(row: $0, section: 0)}),
+//                                     with: .automatic)
+//                self.tableView.reloadRows(at: mods.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+                self.tableView.endUpdates()
 
-        do {
-            let realm = try Realm(configuration: config)
-            users = realm.objects(User.self)
-        } catch {
-            print(error)
+            case .error(let error):
+                fatalError("\(error)")
+            }
         }
     }
     
@@ -93,6 +106,7 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
         }
         let friend = arrayMyFriendsCharacter[indexPath.row]
         //определяю индекс текущего друга
+      //  print(users)
         guard let friends = users else { preconditionFailure("Friends is empty ") }
         for index in 0...friends.count-1 {
             if friends[index].lastName == friend {
@@ -200,8 +214,32 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                 //передаю ID друга в следующий контроллер
                 ownerId = myFriendsController.users?[indexUser].id ?? 0
                 fotoFriendsController.ownerId = ownerId
+                fotoFriendsController.users = users
                 owner = myFriendsController.users?[indexUser]
                 fotoFriendsController.owner = owner
+                photosService.sendRequest(id: ownerId) { [weak self] photos in
+                    
+                    if let self = self {
+                        self.friendsService.sendRequest(photos: photos) { [weak self] users in
+                            if let self = self {
+                                for user in users {
+                                    if user.id == self.ownerId {
+                                        RealmProvider.save(items: [user])
+                                        //self.collectionView?.reloadData()
+                                    }
+                                }
+                                //   print ("========")
+                                // print(self.owner)
+                                //    RealmProvider.save(items: [self.owner!])
+                                //  self.collectionView?.reloadData()
+                            }
+                        }
+                    }
+                }
+             //   myFriendsController.users![indexUser].allPhotosFriend.
+              //  fotoFriendsController.owner = myFriendsController.users![indexUser].allPhotosFriend
+              //  owner = LinkingObjects(fromType: myFriendsController.users![indexUser], property: "allPhotosFriend")
+             //   fotoFriendsController.owner = owner
             }
         }
     }

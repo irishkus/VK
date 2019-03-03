@@ -15,7 +15,7 @@ class FriendsService {
     let sessionUser = UserSession.instance
     let path = "/method/friends.get"
     
-    public func sendRequest(completion: @escaping ([User]) -> Void) {
+    public func sendRequest(photos: [Photo], completion: @escaping ([User]) -> Void) {
         let parameters: Parameters = [
             "access_token": sessionUser.token,
             "order": "name",
@@ -29,8 +29,7 @@ class FriendsService {
             switch repsonse.result {
             case .success(let value):
                 let json = JSON(value)
-                let users = json["response"]["items"].arrayValue.map { json -> User in
-                    return User(json: json)
+                let users = json["response"]["items"].arrayValue.map { User(json: $0, photos: photos)
                 }
                 completion(users)
                 
