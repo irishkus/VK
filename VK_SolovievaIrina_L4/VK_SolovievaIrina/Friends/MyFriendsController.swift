@@ -34,6 +34,27 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchAndSort()
+        users = RealmProvider.get(User.self)
+        notificationToken = users?.observe { [weak self] changes in
+            guard let self = self else { return }
+            switch changes {
+            case .initial(_):
+                self.tableView.reloadData()
+            case .update(_, let dels, let ins, let mods):
+                print(dels)
+                print(ins)
+                print(mods)
+                self.tableView.reloadData()
+
+            case .error(let error):
+                fatalError("\(error)")
+            }
+        }
+    }
+    
+    private func fetchAndSort() {
+        // Вынес разбивку в отдельную функцию
         guard let usersGet = RealmProvider.get(User.self) else {return}
         users = usersGet
         for user in usersGet {
@@ -46,31 +67,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
             }
         }
         self.arrayCharacters.sort()
-        notificationToken = usersGet.observe { [weak self] changes in
-            guard let self = self else { return }
-            switch changes {
-            case .initial(_):
-                self.tableView.reloadData()
-            case .update(_, let dels, let ins, let mods):
-                print(dels)
-                print(ins)
-                print(mods)
-//                self.tableView.beginUpdates()
-//
-//                self.tableView.insertRows(at: ins.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//                self.tableView.deleteRows(at: dels.map({ IndexPath(row: $0, section: 0)}),
-//                                     with: .automatic)
-//                self.tableView.reloadRows(at: mods.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//
-//                self.tableView.endUpdates()
-                self.tableView.reloadData()
-
-            case .error(let error):
-                fatalError("\(error)")
-            }
-        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
