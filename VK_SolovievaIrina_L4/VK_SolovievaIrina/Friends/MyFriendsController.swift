@@ -55,15 +55,17 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                 print(dels)
                 print(ins)
                 print(mods)
-                self.tableView.beginUpdates()
-                self.tableView.reloadData()
+//                self.tableView.beginUpdates()
+//
 //                self.tableView.insertRows(at: ins.map({ IndexPath(row: $0, section: 0) }),
 //                                     with: .automatic)
 //                self.tableView.deleteRows(at: dels.map({ IndexPath(row: $0, section: 0)}),
 //                                     with: .automatic)
 //                self.tableView.reloadRows(at: mods.map({ IndexPath(row: $0, section: 0) }),
 //                                     with: .automatic)
-                self.tableView.endUpdates()
+//
+//                self.tableView.endUpdates()
+                self.tableView.reloadData()
 
             case .error(let error):
                 fatalError("\(error)")

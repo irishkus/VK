@@ -11,13 +11,13 @@ import Kingfisher
 import RealmSwift
 
 class MyGroupsController: UITableViewController, UISearchBarDelegate {
-
+    
     @IBAction func addGroup(segue: UIStoryboardSegue) {
         // Проверяем идентификатор, чтобы убедится, что это нужный переход
         if segue.identifier == "addGroup" {
             // Получаем ссылку на контроллер, с которого осуществлен переход
             let allGroupsController = segue.source as! AllGroupsController
-
+            
             // Получаем индекс выделенной ячейки
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 // Получаем группу по индексу
@@ -42,6 +42,7 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     var searchActive : Bool = false
     //var groups = [Group]()
     var groupsService = GroupsService()
+    var notificationToken: NotificationToken?
     
     var groups: Results<Group>?
     
@@ -67,6 +68,32 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         } catch {
             print(error)
         }
+        guard let groups = groups else {return}
+        notificationToken = groups.observe { [weak self] changes in
+            guard let self = self else { return }
+            switch changes {
+            case .initial(_):
+                self.tableView.reloadData()
+            case .update(_, let dels, let ins, let mods):
+                print(dels)
+                print(ins)
+                print(mods)
+                self.tableView.beginUpdates()
+                
+                self.tableView.insertRows(at: ins.map({ IndexPath(row: $0, section: 0) }),
+                                          with: .automatic)
+                self.tableView.deleteRows(at: dels.map({ IndexPath(row: $0, section: 0)}),
+                                          with: .automatic)
+                self.tableView.reloadRows(at: mods.map({ IndexPath(row: $0, section: 0) }),
+                                          with: .automatic)
+                
+                self.tableView.endUpdates()
+                //   self.tableView.reloadData()
+                
+            case .error(let error):
+                fatalError("\(error)")
+            }
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -78,7 +105,7 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
                 let range = tmp.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
                 if range.location != NSNotFound {
                     filteredGroup.append(group)
-                    }
+                }
             }
             searchActive = true
             tableView.reloadData()}
@@ -124,27 +151,27 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         //        let group = myGroups[indexPath.row]
         //        cell.groupName.text = group
         
-            cell.fotoGroup.backgroundColor = UIColor.clear
-            cell.fotoGroup.layer.shadowColor = UIColor.black.cgColor
-            cell.fotoGroup.layer.shadowOffset = cell.shadowOffset
-            cell.fotoGroup.layer.shadowOpacity = cell.shadowOpacity
-            cell.fotoGroup.layer.shadowRadius = cell.shadowRadius
-            cell.fotoGroup.layer.masksToBounds = false
-            
-            // add subview
-            let borderView = UIView(frame: cell.fotoGroup.bounds)
-            borderView.frame = cell.fotoGroup.bounds
-            borderView.layer.cornerRadius = 25
-            
-            borderView.layer.masksToBounds = true
-            cell.fotoGroup.addSubview(borderView)
-            
-            // add subcontent
-            let photo = UIImageView()
-            photo.kf.setImage(with: URL(string: nameAvatar))
-            photo.frame = borderView.bounds
-            borderView.addSubview(photo)
-            //cell.fotoGroup.image = UIImage(named: nameAvatar)
+        cell.fotoGroup.backgroundColor = UIColor.clear
+        cell.fotoGroup.layer.shadowColor = UIColor.black.cgColor
+        cell.fotoGroup.layer.shadowOffset = cell.shadowOffset
+        cell.fotoGroup.layer.shadowOpacity = cell.shadowOpacity
+        cell.fotoGroup.layer.shadowRadius = cell.shadowRadius
+        cell.fotoGroup.layer.masksToBounds = false
+        
+        // add subview
+        let borderView = UIView(frame: cell.fotoGroup.bounds)
+        borderView.frame = cell.fotoGroup.bounds
+        borderView.layer.cornerRadius = 25
+        
+        borderView.layer.masksToBounds = true
+        cell.fotoGroup.addSubview(borderView)
+        
+        // add subcontent
+        let photo = UIImageView()
+        photo.kf.setImage(with: URL(string: nameAvatar))
+        photo.frame = borderView.bounds
+        borderView.addSubview(photo)
+        //cell.fotoGroup.image = UIImage(named: nameAvatar)
         
         return cell
     }

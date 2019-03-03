@@ -70,9 +70,9 @@ class FotoFriendCollectionController: UICollectionViewController {
                 print("initial")
             case .update(_, let dels, let ins, let mods):
                 self.collectionView.performBatchUpdates({
-//                    self.collectionView.insertItems(at: ins.map({ IndexPath(row: $0, section: 0) }))
-//                    self.collectionView.deleteItems(at: dels.map({ IndexPath(row: $0, section: 0)}))
-//                    self.collectionView.reloadItems(at: mods.map({ IndexPath(row: $0, section: 0) }))
+                    self.collectionView.insertItems(at: ins.map({ IndexPath(row: $0, section: 0) }))
+                    self.collectionView.deleteItems(at: dels.map({ IndexPath(row: $0, section: 0)}))
+                    self.collectionView.reloadItems(at: mods.map({ IndexPath(row: $0, section: 0) }))
                      self.collectionView.reloadData()
                 }, completion: nil)
                 print("=====1")
