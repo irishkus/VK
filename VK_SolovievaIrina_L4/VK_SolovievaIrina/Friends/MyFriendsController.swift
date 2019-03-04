@@ -24,12 +24,13 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     var users: Results<User>?
     var notificationToken: NotificationToken?
     
+    private var countSameLastName = 0
     private var friendsService = FriendsService()
     private var photosService = FotoService()
     private var shadowLayer: CAShapeLayer!
     private var indexUser: Int = 0
     
-//    var owner = LinkingObjects(fromType: User.self, property: "allPhotosFriend")
+    //    var owner = LinkingObjects(fromType: User.self, property: "allPhotosFriend")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,13 +42,10 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
             switch changes {
             case .initial(_):
                 self.tableView.reloadData()
-            case .update(_, let dels, let ins, let mods):
-                print(dels)
-                print(ins)
-                print(mods)
+            case .update(_, _, _, _):
                 self.fetchAndSort()
                 self.tableView.reloadData()
-
+                
             case .error(let error):
                 fatalError("\(error)")
             }
@@ -60,12 +58,11 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     }
     
     private func fetchAndSort() {
-        // Вынес разбивку в отдельную функцию
         guard let users = users else { return }
         for user in users {
-            if user.lastName != "" {
-                guard let character = user.lastName.first else { preconditionFailure("Bad lastName") }
-                self.arrayAllLastName.append(user.lastName)
+            if user.name != "" {
+                guard let character = user.name.first else { preconditionFailure("Bad lastName") }
+                self.arrayAllLastName.append(user.name)
                 if !self.arrayCharacters.contains(String(character)) {
                     self.arrayCharacters.append(String(character))
                 }
@@ -87,13 +84,10 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
         //определяю количество строк в секции
         if searchActive {
             return arrayFilteredFriends?.count ?? 0
-//            arrayMyFriendsCharacter = arrayFilteredFriends
         } else {
             //ищу всех друзей чья фамилия начинается на нужную букву
-            return users.filter("lastName BEGINSWITH[cd] %@", arrayCharacters[section]).count
-//            arrayMyFriendsCharacter = arrayAllLastName.filter {$0.first == Character(arrayCharacters[section]) }
+            return users.filter("name BEGINSWITH[cd] %@", arrayCharacters[section]).count
         }
-     //   return arrayMyFriendsCharacter.count
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
@@ -107,25 +101,28 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
         if searchActive {
             arrayMyFriendsCharacter = []
             for user in arrayFilteredFriends! {
-                arrayMyFriendsCharacter.append(user.lastName)
+                arrayMyFriendsCharacter.append(user.name)
             }
-        //    arrayMyFriendsCharacter = arrayFilteredFriends
-            
         } else {
-            arrayMyFriendsCharacter = arrayAllLastName.filter {$0.first == Character(arrayCharacters[indexPath.section]) }
+            arrayFilteredFriends = users?.filter("name BEGINSWITH[cd] %@", arrayCharacters[indexPath.section])
+            arrayMyFriendsCharacter = []
+            for user in arrayFilteredFriends! {
+                arrayMyFriendsCharacter.append(user.name)
+            }
         }
+        print(arrayMyFriendsCharacter)
         let friend = arrayMyFriendsCharacter[indexPath.row]
         //определяю индекс текущего друга
-      //  print(users)
         guard let friends = users else { preconditionFailure("Friends is empty ") }
+        
         for index in 0...friends.count-1 {
-            if friends[index].lastName == friend {
+            if friends[index].name == friend {
                 indexUser = index
             }
         }
         let user = friends[indexUser]
         //заполняю имя друга
-        cell.friendName.text = user.firstName + " " + user.lastName
+        cell.friendName.text = user.name
         cell.layer.backgroundColor = UIColor.clear.cgColor
         let nameAvatar = user.photo
         //заполняю фото друга
@@ -176,13 +173,7 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
         if searchText != "" {
             //фильтрую всех друзей и нахожу тех кто удовлетворяет строке поиска без учета регистра
             guard let users = users else {return}
-           // arrayFilteredFriends
-            arrayFilteredFriends = users.filter("lastName CONTAINS[cd] %@", searchText)
-//                arrayAllLastName.filter({(text) -> Bool in
-//                let tmp: NSString = text as NSString
-//                let range = tmp.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
-//                return range.location != NSNotFound
-//            })
+            arrayFilteredFriends = users.filter("name CONTAINS[cd] %@", searchText)
             searchActive = true
             tableView.reloadData()
         }
@@ -229,8 +220,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                 //передаю ID друга в следующий контроллер
                 ownerId = myFriendsController.users?[indexUser].id ?? 0
                 fotoFriendsController.ownerId = ownerId
-
-
             }
         }
     }

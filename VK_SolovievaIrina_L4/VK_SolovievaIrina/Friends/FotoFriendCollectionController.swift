@@ -47,7 +47,7 @@ class FotoFriendCollectionController: UICollectionViewController {
             photosService.sendRequest(id: ownerId) { photos in
                 //запрашиваем юзера из базы данных и прикрепляем к нему загруженные фото
                 guard let user = realm.object(ofType: User.self, forPrimaryKey: self.ownerId) else { return }
-                // поставил здесь try? - но по уму нужно вынести как отдельный метод в наш RealmProvider
+                // нужно вынести как отдельный метод в RealmProvider
                 try? realm.write {
                     //сохраняем наши фото, если вдруг что передаем обновление по уникальному ключу
                     realm.add(photos, update: true)

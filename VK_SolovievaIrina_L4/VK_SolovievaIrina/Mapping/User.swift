@@ -14,14 +14,14 @@ import RealmSwift
 class User : Object {
     
    @objc dynamic var id = 0
-   @objc dynamic var firstName = ""
+   @objc dynamic var name = ""
    @objc dynamic var lastName = ""
    @objc dynamic var photo = ""
     var photos = List<Photo>()
 
     convenience init(json: JSON, photos : [Photo] = [])  {
         self.init()
-        self.firstName = json["first_name"].stringValue
+        self.name = json["last_name"].stringValue + " " + json["first_name"].stringValue
         self.lastName = json["last_name"].stringValue
         self.photo = json["photo_50"].stringValue
         self.id = json["id"].intValue
