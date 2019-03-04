@@ -15,7 +15,7 @@ class FriendsService {
     let sessionUser = UserSession.instance
     let path = "/method/friends.get"
     
-    public func sendRequest(photos: [Photo], completion: @escaping ([User]) -> Void) {
+    public func sendRequest(photos: [Photo] = [], completion: @escaping ([User]) -> Void) {
         let parameters: Parameters = [
             "access_token": sessionUser.token,
             "order": "name",

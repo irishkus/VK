@@ -12,45 +12,29 @@ import RealmSwift
 
 class FotoFriendCollectionController: UICollectionViewController {
     var fotoDelegate: [String] = []
-    var ownerId: Int = 0
-    // var owner = LinkingObjects(fromType: User.self, property: "allPhotosFriend")
-    var users: Results<User>?
-    //    let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-    //    self.view.addGestureRecognizer(recognizer)
+    
+    // передаем только ownerId, для работы с пользователем можем добавить запрос по уникальному ключу, для получения этого пользователя, но это не обязательно
+    public var ownerId: Int = 0
+    
+    // Запрос и токен для отображения данных
     private var photos: Results<Photo>?
-    var photosService = FotoService()
-    var friendsServiсe = FriendsService()
-    var owner: User?
-    var notificationToken: NotificationToken?
+    private var notificationToken: NotificationToken?
+    
+    //Сервисы не изменяются, нигде кроме контроллера не используются, соответственно смело их объявляем как private let
+    private let photosService = FotoService()
+    private let friendsServiсe = FriendsService()
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationItem.backBarButtonItem?.title = "Закрыть"
-//        photosService.sendRequest(id: ownerId) { [weak self] photos in
-//           
-//            if let self = self {
-//                self.friendsServiсe.sendRequest(photos: photos) { [weak self] users in
-//                    if let self = self {
-//                        for user in users {
-//                            if user.id == self.ownerId {
-//                                RealmProvider.save(items: [user])
-//                                self.collectionView?.reloadData()
-//                            }
-//                        }
-//                        //   print ("========")
-//                        // print(self.owner)
-//                        //    RealmProvider.save(items: [self.owner!])
-//                        //  self.collectionView?.reloadData()
-//                    }
-//               }
-//            }
-//        }
-        //  self.tabBarController?.tabBar.isHidden = true
-        //  self.navigationController?.navigationBar.barStyle = .blackTranslucent
-        //   let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onSwipe(_:)))
-        //  self.collectionView.addGestureRecognizer(recognizer)
         
+        fetchPhoto()
+        bindObserver()
+    }
+    
+    private func fetchPhoto() {
+        
+        //from database
         let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
         do {
             let realm = try Realm(configuration: config)
@@ -58,10 +42,27 @@ class FotoFriendCollectionController: UICollectionViewController {
             photos = realm.objects(Photo.self).filter("ANY owner.id == %@", ownerId)
             print(photos!.count)
             print(ownerId)
+            
+            //or from server
+            photosService.sendRequest(id: ownerId) { photos in
+                //запрашиваем юзера из базы данных и прикрепляем к нему загруженные фото
+                guard let user = realm.object(ofType: User.self, forPrimaryKey: self.ownerId) else { return }
+                // поставил здесь try? - но по уму нужно вынести как отдельный метод в наш RealmProvider
+                try? realm.write {
+                    //сохраняем наши фото, если вдруг что передаем обновление по уникальному ключу
+                    realm.add(photos, update: true)
+                    //прикрепляем эти же фото к нашему пользователю
+                    user.photos.append(objectsIn: photos)
+                }
+            }
         } catch {
             print(error)
         }
-        guard let photo = photos else {return}
+    }
+    
+    private func bindObserver() {
+        guard let photo = photos else { return }
+        
         notificationToken = photo.observe { [weak self] changes in
             guard let self = self else { return }
             switch changes {
@@ -73,7 +74,7 @@ class FotoFriendCollectionController: UICollectionViewController {
                     self.collectionView.insertItems(at: ins.map({ IndexPath(row: $0, section: 0) }))
                     self.collectionView.deleteItems(at: dels.map({ IndexPath(row: $0, section: 0)}))
                     self.collectionView.reloadItems(at: mods.map({ IndexPath(row: $0, section: 0) }))
-                     self.collectionView.reloadData()
+                    self.collectionView.reloadData()
                 }, completion: nil)
                 print("=====1")
                 print(dels)
@@ -85,11 +86,6 @@ class FotoFriendCollectionController: UICollectionViewController {
                 fatalError("\(error)")
             }
         }
-    }
-    
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
