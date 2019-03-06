@@ -17,7 +17,6 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         if segue.identifier == "addGroup" {
             // Получаем ссылку на контроллер, с которого осуществлен переход
             let allGroupsController = segue.source as! AllGroupsController
-            
             // Получаем индекс выделенной ячейки
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 // Получаем группу по индексу
@@ -38,9 +37,8 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     var myGroups: [String] = []
     var myGroupsFoto = ["Котики": "red", "Собачки": "green", "Кролики": "orange"]
     let searchController = UISearchController(searchResultsController: nil)
-    var filteredGroup = [Group]()
+    var filteredGroup: Results<Group>?
     var searchActive : Bool = false
-    //var groups = [Group]()
     var groupsService = GroupsService()
     var notificationToken: NotificationToken?
     
@@ -97,16 +95,9 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filteredGroup = []
         if searchText != "" {
-            guard let groupsOpt = groups else { preconditionFailure("Groups is empty ") }
-            for group in groupsOpt {
-                let tmp: NSString = group.name as NSString
-                let range = tmp.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
-                if range.location != NSNotFound {
-                    filteredGroup.append(group)
-                }
-            }
+            guard let groups = groups else { preconditionFailure("Groups is empty ") }
+            filteredGroup = groups.filter("name CONTAINS[cd] %@", searchText)
             searchActive = true
             tableView.reloadData()}
         else {
@@ -133,7 +124,7 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchActive {
-            return filteredGroup.count
+            return filteredGroup?.count ?? 0
         } else {
             return groups?.count ?? 0
         }
@@ -143,14 +134,12 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! MyGroupCell
         var nameAvatar = String()
         if searchActive {
+            guard let filteredGroup = filteredGroup else { preconditionFailure("Filter groups is empty ")  }
             cell.groupName.text = filteredGroup[indexPath.row].name
             nameAvatar = filteredGroup[indexPath.row].photo
         } else { cell.groupName.text = groups?[indexPath.row].name ?? ""
             nameAvatar = groups?[indexPath.row].photo ?? ""
         }
-        //        let group = myGroups[indexPath.row]
-        //        cell.groupName.text = group
-        
         cell.fotoGroup.backgroundColor = UIColor.clear
         cell.fotoGroup.layer.shadowColor = UIColor.black.cgColor
         cell.fotoGroup.layer.shadowOffset = cell.shadowOffset
@@ -171,7 +160,6 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
         photo.kf.setImage(with: URL(string: nameAvatar))
         photo.frame = borderView.bounds
         borderView.addSubview(photo)
-        //cell.fotoGroup.image = UIImage(named: nameAvatar)
         
         return cell
     }

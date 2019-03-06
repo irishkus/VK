@@ -30,7 +30,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     private var shadowLayer: CAShapeLayer!
     private var indexUser: Int = 0
     
-    //    var owner = LinkingObjects(fromType: User.self, property: "allPhotosFriend")
     
     override func viewDidLoad() {
         super.viewDidLoad()
