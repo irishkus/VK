@@ -33,8 +33,6 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         users = RealmProvider.get(User.self)
         notificationToken = users?.observe { [weak self] changes in
             guard let self = self else { return }
@@ -98,14 +96,17 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as! MyFriendsCell
         if searchActive {
+            guard let arrayFilteredFriends = arrayFilteredFriends else { preconditionFailure("Bad arrayFilteredFriends") }
             arrayMyFriendsCharacter = []
-            for user in arrayFilteredFriends! {
+            for user in arrayFilteredFriends {
                 arrayMyFriendsCharacter.append(user.name)
             }
         } else {
+            //guard let users = users else { preconditionFailure("Bad user") }
             arrayFilteredFriends = users?.filter("name BEGINSWITH[cd] %@", arrayCharacters[indexPath.section])
+            guard let arrayFilteredFriends = arrayFilteredFriends else { preconditionFailure("Bad arrayFilteredFriends") }
             arrayMyFriendsCharacter = []
-            for user in arrayFilteredFriends! {
+            for user in arrayFilteredFriends {
                 arrayMyFriendsCharacter.append(user.name)
             }
         }

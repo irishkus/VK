@@ -20,22 +20,37 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
             // Получаем индекс выделенной ячейки
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 // Получаем группу по индексу
-                let group = allGroupsController.allGroups[indexPath.row]
-                let groupFoto = allGroupsController.allGroupsFoto[group]
-                // Добавляем группу в список моих групп
-                if !myGroups.contains(group) {
-                    myGroups.append(group)
-                    // Обновляем таблицу
-                    myGroupsFoto[group] = groupFoto
-                    tableView.reloadData()
+                var searchGroup = SearchGroup()
+                if allGroupsController.searchActive {
+                    guard let filteredGroup = allGroupsController.filteredGroup?[indexPath.row] else { preconditionFailure("Groups is empty ") }
+                    searchGroup = filteredGroup
+                } else {
+                    guard let searchGroups = allGroupsController.searchGroups?[indexPath.row] else { preconditionFailure("Groups is empty ") }
+                    searchGroup = searchGroups
                 }
+                print(searchGroup)
+                let group = Group()
+               // guard let searchGroups = searchGroup else { preconditionFailure("Groups is empty ") }
+                group.id = searchGroup.id
+                group.name = searchGroup.name
+                group.photo = searchGroup.photo
+                print(group)
+                RealmProvider.save(items: [group])
+//                do {
+//                    let realm = try Realm()
+//                    realm.beginWrite()
+//                    realm.add(group, update: true)
+//                    try realm.commitWrite()
+//                } catch {
+//                    print(error)
+//                }
             }
         }
     }
     
+    
     @IBOutlet weak var searchBar: UISearchBar!
     var myGroups: [String] = []
-    var myGroupsFoto = ["Котики": "red", "Собачки": "green", "Кролики": "orange"]
     let searchController = UISearchController(searchResultsController: nil)
     var filteredGroup: Results<Group>?
     var searchActive : Bool = false
@@ -59,7 +74,6 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
             }
         }
         let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-        //let realm = try! Realm(configuration: config)
         do {
             let realm = try Realm(configuration: config)
             groups = realm.objects(Group.self)
@@ -72,22 +86,8 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
             switch changes {
             case .initial(_):
                 self.tableView.reloadData()
-            case .update(_, let dels, let ins, let mods):
-                print(dels)
-                print(ins)
-                print(mods)
-                self.tableView.beginUpdates()
-                
-                self.tableView.insertRows(at: ins.map({ IndexPath(row: $0, section: 0) }),
-                                          with: .automatic)
-                self.tableView.deleteRows(at: dels.map({ IndexPath(row: $0, section: 0)}),
-                                          with: .automatic)
-                self.tableView.reloadRows(at: mods.map({ IndexPath(row: $0, section: 0) }),
-                                          with: .automatic)
-                
-                self.tableView.endUpdates()
-                //   self.tableView.reloadData()
-                
+            case .update(_, _, _, _):
+                self.tableView.reloadData()
             case .error(let error):
                 fatalError("\(error)")
             }
@@ -118,7 +118,6 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     

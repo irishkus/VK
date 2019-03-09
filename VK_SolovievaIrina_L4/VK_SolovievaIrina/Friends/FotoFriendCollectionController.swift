@@ -11,16 +11,12 @@ import Kingfisher
 import RealmSwift
 
 class FotoFriendCollectionController: UICollectionViewController {
-    var fotoDelegate: [String] = []
-    
-    // передаем только ownerId, для работы с пользователем можем добавить запрос по уникальному ключу, для получения этого пользователя, но это не обязательно
+   // var fotoDelegate: [String] = []
+
     public var ownerId: Int = 0
     
-    // Запрос и токен для отображения данных
     private var photos: Results<Photo>?
     private var notificationToken: NotificationToken?
-    
-    //Сервисы не изменяются, нигде кроме контроллера не используются, соответственно смело их объявляем как private let
     private let photosService = FotoService()
     private let friendsServiсe = FriendsService()
 
@@ -40,9 +36,6 @@ class FotoFriendCollectionController: UICollectionViewController {
             let realm = try Realm(configuration: config)
             //  guard let user = self.owner else {return}
             photos = realm.objects(Photo.self).filter("ANY owner.id == %@", ownerId)
-            print(photos!.count)
-            print(ownerId)
-            
             //or from server
             photosService.sendRequest(id: ownerId) { photos in
                 //запрашиваем юзера из базы данных и прикрепляем к нему загруженные фото
@@ -76,11 +69,6 @@ class FotoFriendCollectionController: UICollectionViewController {
                     self.collectionView.reloadItems(at: mods.map({ IndexPath(row: $0, section: 0) }))
                     self.collectionView.reloadData()
                 }, completion: nil)
-                print("=====1")
-                print(dels)
-                print("=====2")
-                print(ins)
-                print("=====3")
                 print(mods)
             case .error(let error):
                 fatalError("\(error)")
@@ -90,8 +78,6 @@ class FotoFriendCollectionController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        print("=====4")
-        print(photos!.count)
         return photos?.count ?? 0
     }
     
@@ -111,7 +97,6 @@ class FotoFriendCollectionController: UICollectionViewController {
                         //   collectionView.isScrollEnabled = false
         })
         let photo = photos?[indexPath.row]
-        //fotoDelegate[indexPath.row]
         cell.allFoto.kf.setImage(with: URL(string: photo?.url ?? ""))
         //  self.navigationController?.navigationItem.backBarButtonItem?.title = "Закрыть"
         //  self.navigationItem.title = "\(indexPath.row+1) из \(fotoDelegate.count)"
@@ -157,7 +142,6 @@ class FotoFriendCollectionController: UICollectionViewController {
             interactiveAnimator.addAnimations {
                 self.collectionView.transform = .identity
             }
-            self.collectionView.reloadData()
             self.collectionView.reloadData()
             
         default: return //self.collectionView.cancelInteractiveMovement()
