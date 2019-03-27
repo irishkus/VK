@@ -38,7 +38,7 @@
                     </view>
                     <connections>
                         <outlet property="vkWebView" destination="Mcl-IY-oUq" id="9cO-n8-kfc"/>
-                        <segue destination="TjU-Nx-wC2" kind="presentation" identifier="VKClient" id="SRA-Zu-eLg"/>
+                        <segue destination="TjU-Nx-wC2" kind="show" identifier="VKClient" id="sQc-5S-jzE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wq7-r7-egY" userLabel="First Responder" sceneMemberID="firstResponder"/>

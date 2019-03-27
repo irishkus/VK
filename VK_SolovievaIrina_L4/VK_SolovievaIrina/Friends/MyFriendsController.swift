@@ -110,7 +110,7 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                 arrayMyFriendsCharacter.append(user.name)
             }
         }
-        print(arrayMyFriendsCharacter)
+     //   print(arrayMyFriendsCharacter)
         let friend = arrayMyFriendsCharacter[indexPath.row]
         //определяю индекс текущего друга
         guard let friends = users else { preconditionFailure("Friends is empty ") }
@@ -203,23 +203,28 @@ class MyFriendsController: UITableViewController, UISearchBarDelegate {
                 if searchActive {
                     arrayMyFriendsCharacter = []
                     for user in arrayFilteredFriends! {
-                        arrayMyFriendsCharacter.append(user.lastName)
+                        arrayMyFriendsCharacter.append(user.name)
                     }
                 }
                 else {
                     arrayMyFriendsCharacter = arrayAllLastName.filter {$0.first == Character(arrayCharacters[indexPath.section]) }}
                 // Получаю друга по индексу
                 let friend = myFriendsController.arrayMyFriendsCharacter[indexPath.row]
+                print(friend)
                 var indexUser: Int = 0
                 guard let friends = users else { preconditionFailure("Friends is empty ") }
                 for index in 0...friends.count-1 {
-                    if friends[index].lastName == friend {
+                    print(friends[index].lastName)
+                    if friends[index].name == friend {
                         indexUser = index
+                        print("------")
+                        print(indexUser)
                     }
                 }
                 //передаю ID друга в следующий контроллер
                 ownerId = myFriendsController.users?[indexUser].id ?? 0
                 fotoFriendsController.ownerId = ownerId
+                print(ownerId)
             }
         }
     }

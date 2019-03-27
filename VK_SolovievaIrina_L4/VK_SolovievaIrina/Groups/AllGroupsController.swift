@@ -17,9 +17,9 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     let searchController = UISearchController(searchResultsController: nil)
     var allGroups: [String] = []
-    var filteredGroup: Results<SearchGroup>?
-    var searchActive : Bool = false
-    var searchGroups: Results<SearchGroup>?
+    var filteredGroups = [SearchGroup]()
+    var searchActiveAll : Bool = false
+    var searchGroups = [SearchGroup]()
     var searchGroupsService = SearchGroupsService()
     var notificationToken: NotificationToken?
     
@@ -27,7 +27,7 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
         super.viewDidLoad()
         searchGroupsService.sendRequest(searchText: "a") { [weak self] searchGroups in
             if let self = self {
-                RealmProvider.save(items: searchGroups)
+              self.searchGroups = searchGroups
                 DispatchQueue.main.async {
                     self.tableView?.reloadData()
                 }
@@ -37,88 +37,30 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
                 self.allGroups.sort()
             }
         }
-        searchGroups = RealmProvider.get(SearchGroup.self)
-        guard let searchGroups = searchGroups else {return}
-        notificationToken = searchGroups.observe { [weak self] changes in
-            guard let self = self else { return }
-            switch changes {
-            case .initial(_):
-                self.tableView.reloadData()
-            case .update(_, _, _, _):
-                self.tableView.reloadData()
-                
-            case .error(let error):
-                fatalError("\(error)")
-            }
-        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != "" {
-           // let oldSearchGroup = RealmProvider.get(SearchGroup.self)
-            do {
-            let realm = try Realm()
-            realm.beginWrite()
-            // удаляю старые данные чтобы не захламлять таблицу
-            realm.deleteAll()
-            try realm.commitWrite()
-            }  catch {
-                print(error)
-            }
+            filteredGroups = []
             searchGroupsService.sendRequest(searchText: searchText) { [weak self] searchGroups in
                 if let self = self {
-                    RealmProvider.save(items: searchGroups)
+                    self.filteredGroups = searchGroups
                     DispatchQueue.main.async {
                         self.tableView?.reloadData()
                     }
+
                 }
             }
-            searchGroups = RealmProvider.get(SearchGroup.self)
-            guard let searchGroups = searchGroups else { preconditionFailure("Search groups is empty ")  }
-            filteredGroup = searchGroups.filter("name CONTAINS[cd] %@", searchText)
-            //   filteredGroup = searchGroups
-            searchActive = true
+            searchActiveAll = true
         }
         else {
-            searchActive = false
+            searchActiveAll = false
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-      //  let oldSearchGroup = RealmProvider.get(SearchGroup.self)
-     //   searchGroups = RealmProvider.get(SearchGroup.self)
-     //   print(searchGroups)
-//        do {
-//            let realm = try Realm()
-//            realm.beginWrite()
-//            // удаляю старые данные чтобы не захламлять таблицу
-//            realm.delete(oldSearchGroup!)
-//           // realm.deleteAll()
-//            try realm.commitWrite()
-//        }  catch {
-//            print(error)
-//        }
-//        searchGroupsService.sendRequest(searchText: "а") { [weak self] searchGroups in
-//            if let self = self {
-//                RealmProvider.save(items: searchGroups)
-//                print("+++++")
-//                print(searchGroups)
-////                DispatchQueue.main.async {
-////                    self.tableView?.reloadData()
-////                }
-//                for group in searchGroups {
-//                    self.allGroups.append(group.name)
-//                }
-//                self.allGroups.sort()
-//
-//            }
-//        }
-//        //print
-//        searchGroups = RealmProvider.get(SearchGroup.self)
-//        print("======")
-//        print (searchGroups)
-        searchActive = false
+        searchActiveAll = false
         tableView.reloadData()
     }  
     
@@ -127,7 +69,7 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchGroups?.count ?? 0
+        return searchGroups.count
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -143,8 +85,8 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if searchActive {
-            return filteredGroup?.count ?? 0
+        if searchActiveAll {
+            return filteredGroups.count
         } else {
             return allGroups.count
         }
@@ -154,12 +96,11 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllGroupCell", for: indexPath) as! AllGroupsCell
         var nameAvatar = String()
-        if searchActive {
-            guard let filteredGroup = filteredGroup else { preconditionFailure("Filter groups is empty ")  }
-            cell.allGroupName.text = filteredGroup[indexPath.row].name
-            nameAvatar = filteredGroup[indexPath.row].photo
-        } else { cell.allGroupName.text = searchGroups?[indexPath.row].name ?? ""
-            nameAvatar = searchGroups?[indexPath.row].photo ?? ""
+        if searchActiveAll {
+            cell.allGroupName.text = filteredGroups[indexPath.row].name
+            nameAvatar = filteredGroups[indexPath.row].photo
+        } else { cell.allGroupName.text = searchGroups[indexPath.row].name
+            nameAvatar = searchGroups[indexPath.row].photo
         }
         cell.allGroupFoto.backgroundColor = UIColor.clear
         cell.allGroupFoto.layer.shadowColor = UIColor.black.cgColor

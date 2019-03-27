@@ -29,7 +29,7 @@ class FotoFriendCollectionController: UICollectionViewController {
     }
     
     private func fetchPhoto() {
-        
+        print(ownerId)
         //from database
         let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
         do {
@@ -82,11 +82,7 @@ class FotoFriendCollectionController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FotoCell", for: indexPath) as! FotoCollectionCell
-        //  cell.superview?.bringSubviewToFront(cell)
-        //    self.tabBarController?.tabBar.isHidden = true
-        //  self.navigationController?.isNavigationBarHidden = true
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FotoCell", for: indexPath) as! FotoCollectionCell       
         UIView.animate(withDuration: 0.5,
                        delay: 0,
                        usingSpringWithDamping: 1,
@@ -103,57 +99,6 @@ class FotoFriendCollectionController: UICollectionViewController {
         reloadInputViews()
         
         return cell
-        
-    }
-    
-    var interactiveAnimator: UIViewPropertyAnimator!
-    
-    @objc func onSwipe(_ recognizer: UIPanGestureRecognizer) {
-        guard let selectedIndexPath = self.collectionView.indexPathForItem(at: recognizer.location(in: self.collectionView)) else {
-            return
-        }
-        print(selectedIndexPath.row)
-        switch recognizer.state {
-        case .began:
-            
-            // self.collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
-            interactiveAnimator?.startAnimation()
-            print("start")
-            interactiveAnimator = UIViewPropertyAnimator(duration: 0.5,
-                                                         curve: .linear,
-                                                         animations: {
-                                                            let scale = CATransform3DScale(CATransform3DIdentity, 0.7, 0.7, 0)
-                                                            self.collectionView.cellForItem(at: selectedIndexPath)!.transform = CATransform3DGetAffineTransform(scale)
-            })
-            
-            interactiveAnimator.pauseAnimation()
-        case .changed:
-            print("change")
-            
-            let translation = recognizer.translation(in: self.collectionView)
-            interactiveAnimator.fractionComplete = translation.y/100
-            print(translation)
-        //   self.collectionView.updateInteractiveMovementTargetPosition(recognizer.location(in: recognizer.view!))
-        case .ended:
-            print("end")
-            //     self.collectionView.endInteractiveMovement()
-            interactiveAnimator.stopAnimation(true)
-            
-            interactiveAnimator.addAnimations {
-                self.collectionView.transform = .identity
-            }
-            self.collectionView.reloadData()
-            
-        default: return //self.collectionView.cancelInteractiveMovement()
-        }
-    }
-    
-    //    override func collectionView(_ collectionView: UICollectionView, targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
-    //
-    //    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
     }
     

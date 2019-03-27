@@ -21,29 +21,26 @@ class MyGroupsController: UITableViewController, UISearchBarDelegate {
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 // Получаем группу по индексу
                 var searchGroup = SearchGroup()
-                if allGroupsController.searchActive {
-                    guard let filteredGroup = allGroupsController.filteredGroup?[indexPath.row] else { preconditionFailure("Groups is empty ") }
-                    searchGroup = filteredGroup
+                if allGroupsController.searchActiveAll {
+                    searchGroup = allGroupsController.filteredGroups[indexPath.row]
                 } else {
-                    guard let searchGroups = allGroupsController.searchGroups?[indexPath.row] else { preconditionFailure("Groups is empty ") }
-                    searchGroup = searchGroups
+                   searchGroup = allGroupsController.searchGroups[indexPath.row]
                 }
                 print(searchGroup)
                 let group = Group()
-               // guard let searchGroups = searchGroup else { preconditionFailure("Groups is empty ") }
                 group.id = searchGroup.id
                 group.name = searchGroup.name
                 group.photo = searchGroup.photo
                 print(group)
-                RealmProvider.save(items: [group])
-//                do {
-//                    let realm = try Realm()
-//                    realm.beginWrite()
-//                    realm.add(group, update: true)
-//                    try realm.commitWrite()
-//                } catch {
-//                    print(error)
-//                }
+                do {
+                    let realm = try Realm()
+                    realm.beginWrite()
+                    realm.add(group, update: true)
+                    try realm.commitWrite()
+                } catch {
+                    print(error)
+                }
+                tableView.reloadData()
             }
         }
     }
