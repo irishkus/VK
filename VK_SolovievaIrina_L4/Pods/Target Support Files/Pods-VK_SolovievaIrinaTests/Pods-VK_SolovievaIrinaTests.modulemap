@@ -1,6 +1,0 @@
-framework module Pods_VK_SolovievaIrinaTests {
-  umbrella header "Pods-VK_SolovievaIrinaTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
